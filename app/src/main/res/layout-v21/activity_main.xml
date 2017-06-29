@@ -90,9 +90,15 @@
     <android.support.design.widget.BottomNavigationView
         android:background="@color/white"
         android:id="@+id/navigation"
+        android:elevation="@dimen/len_4"
         android:layout_width="match_parent"
         android:layout_height="@dimen/len_52"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        app:elevation="@dimen/len_4"
+        android:outlineProvider="bounds"
+        app:menu="@menu/navigation_items"
+        app:itemIconTint="@color/text_nav"
+        app:itemTextColor="@color/text_nav">
     </android.support.design.widget.BottomNavigationView>
 
 </android.support.design.widget.CoordinatorLayout>
