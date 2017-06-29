@@ -3,6 +3,7 @@ package net.qiujuer.italker.push;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -20,12 +21,19 @@ import com.bumptech.glide.request.target.ViewTarget;
 import net.qiujuer.italker.common.app.Activity;
 import net.qiujuer.italker.common.widget.PortraitView;
 import net.qiujuer.italker.common.widget.recycler.RecyclerAdapter;
+import net.qiujuer.italker.push.frags.NavHelper;
+import net.qiujuer.italker.push.frags.main.ActiveFragment;
+import net.qiujuer.italker.push.frags.main.ContactFragment;
+import net.qiujuer.italker.push.frags.main.GroupFragment;
+
+import java.security.acl.Group;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends Activity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends Activity
+        implements BottomNavigationView.OnNavigationItemSelectedListener,NavHelper.TabChangeListener{
 
     @BindView(R.id.appbar)
     View mActionBar;
@@ -42,6 +50,8 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
     @BindView(R.id.navigation)
     BottomNavigationView mNavigation;
 
+    NavHelper mNavHelper = new NavHelper(this,getSupportFragmentManager(),R.id.lay_container,this);
+
 
     @Override
     protected int getContentLayoutId() {
@@ -50,6 +60,7 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
 
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void initWidget() {
         super.initWidget();
 
@@ -65,6 +76,20 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
                         this.view.setBackground(resource.getCurrent());
                     }
                 });
+
+        initNav();
+    }
+
+    @SuppressWarnings("unchecked")
+    private void initNav(){
+        NavHelper.Tab<Object> tab1 = new NavHelper.Tab<>(ActiveFragment.class,R.id.action_home,null);
+        NavHelper.Tab<Object> tab2 = new NavHelper.Tab<>(GroupFragment.class,R.id.action_group,null);
+        NavHelper.Tab<Object> tab3 = new NavHelper.Tab<>(ContactFragment.class,R.id.action_contact,null);
+
+        mNavHelper.addTab(tab1);
+        mNavHelper.addTab(tab2);
+        mNavHelper.addTab(tab3);
+        mNavigation.setSelectedItemId(R.id.action_contact);
     }
 
     @OnClick(R.id.im_search)
@@ -79,13 +104,7 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        if (item.getItemId() == R.id.action_home){
-            mTitle.setText(R.string.title_home);
-
-        }
-
-
-        return true;
+        mTitle.setText(item.getTitle());
+        return  mNavHelper.performSelect(item.getItemId());
     }
 }
