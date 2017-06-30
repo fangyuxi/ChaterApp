@@ -3,11 +3,13 @@ package net.qiujuer.italker.push;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -18,6 +20,8 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
 
+import net.qiujuer.genius.ui.Ui;
+import net.qiujuer.genius.ui.widget.FloatActionButton;
 import net.qiujuer.italker.common.app.Activity;
 import net.qiujuer.italker.common.widget.PortraitView;
 import net.qiujuer.italker.common.widget.recycler.RecyclerAdapter;
@@ -50,6 +54,9 @@ public class MainActivity extends Activity
     @BindView(R.id.navigation)
     BottomNavigationView mNavigation;
 
+    @BindView(R.id.btn_action)
+    FloatActionButton actionButton;
+
     NavHelper mNavHelper = new NavHelper(this,getSupportFragmentManager(),R.id.lay_container,this);
 
 
@@ -80,18 +87,6 @@ public class MainActivity extends Activity
         initNav();
     }
 
-    @SuppressWarnings("unchecked")
-    private void initNav(){
-        NavHelper.Tab<Object> tab1 = new NavHelper.Tab<>(ActiveFragment.class,R.id.action_home,null);
-        NavHelper.Tab<Object> tab2 = new NavHelper.Tab<>(GroupFragment.class,R.id.action_group,null);
-        NavHelper.Tab<Object> tab3 = new NavHelper.Tab<>(ContactFragment.class,R.id.action_contact,null);
-
-        mNavHelper.addTab(tab1);
-        mNavHelper.addTab(tab2);
-        mNavHelper.addTab(tab3);
-        mNavigation.setSelectedItemId(R.id.action_contact);
-    }
-
     @OnClick(R.id.im_search)
     void onSearchMenuClick(){
 
@@ -105,6 +100,41 @@ public class MainActivity extends Activity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         mTitle.setText(item.getTitle());
+        floatingButtonAnimation(item.getItemId());
         return  mNavHelper.performSelect(item.getItemId());
+    }
+
+    @SuppressWarnings("unchecked")
+    private void initNav(){
+        NavHelper.Tab<Object> tab1 = new NavHelper.Tab<>(ActiveFragment.class,R.id.action_home,null);
+        NavHelper.Tab<Object> tab2 = new NavHelper.Tab<>(GroupFragment.class,R.id.action_group,null);
+        NavHelper.Tab<Object> tab3 = new NavHelper.Tab<>(ContactFragment.class,R.id.action_contact,null);
+
+        mNavHelper.addTab(tab1);
+        mNavHelper.addTab(tab2);
+        mNavHelper.addTab(tab3);
+        mNavigation.setSelectedItemId(R.id.action_contact);
+    }
+
+    private void floatingButtonAnimation(int menuId){
+        float transY = 0;
+        float rotation = 0;
+
+        if (menuId == R.id.action_home){
+            transY = Ui.dipToPx(getResources(),76);
+        }else if (menuId == R.id.action_group){
+            actionButton.setImageResource(R.drawable.ic_group_add);
+            rotation = -360;
+        }else if (menuId == R.id.action_contact){
+            actionButton.setImageResource(R.drawable.ic_contact_add);
+            rotation = 360;
+        }
+
+        actionButton.animate()
+                .rotation(rotation)
+                .translationY(transY)
+                .setInterpolator(new AnticipateOvershootInterpolator(1))
+                .setDuration(480)
+                .start();
     }
 }
