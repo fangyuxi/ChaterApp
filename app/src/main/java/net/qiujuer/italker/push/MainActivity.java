@@ -72,7 +72,6 @@ public class MainActivity extends Activity
         super.initWidget();
 
         mNavigation.setOnNavigationItemSelectedListener(this);
-        mTitle.setText(R.string.action_home);
 
         Glide.with(this)
                 .load(R.drawable.bg_src_morning)
@@ -106,14 +105,14 @@ public class MainActivity extends Activity
 
     @SuppressWarnings("unchecked")
     private void initNav(){
-        NavHelper.Tab<Object> tab1 = new NavHelper.Tab<>(ActiveFragment.class,R.id.action_home,null);
-        NavHelper.Tab<Object> tab2 = new NavHelper.Tab<>(GroupFragment.class,R.id.action_group,null);
-        NavHelper.Tab<Object> tab3 = new NavHelper.Tab<>(ContactFragment.class,R.id.action_contact,null);
+        NavHelper.Tab tab1 = new NavHelper.Tab(ActiveFragment.class,R.id.action_home,null);
+        NavHelper.Tab tab2 = new NavHelper.Tab(GroupFragment.class,R.id.action_group,null);
+        NavHelper.Tab tab3 = new NavHelper.Tab(ContactFragment.class,R.id.action_contact,null);
 
         mNavHelper.addTab(tab1);
         mNavHelper.addTab(tab2);
         mNavHelper.addTab(tab3);
-        mNavigation.setSelectedItemId(R.id.action_contact);
+        mNavigation.setSelectedItemId(R.id.action_home);
     }
 
     private void floatingButtonAnimation(int menuId){
@@ -136,5 +135,15 @@ public class MainActivity extends Activity
                 .setInterpolator(new AnticipateOvershootInterpolator(1))
                 .setDuration(480)
                 .start();
+    }
+
+    @Override
+    public void tabChangedSelect(NavHelper.Tab oldTab, NavHelper.Tab newTab) {
+
+    }
+
+    @Override
+    public void tabChangedReSelect(NavHelper.Tab tab) {
+
     }
 }
