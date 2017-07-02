@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.qiujuer.italker.common.R;
+import net.qiujuer.italker.common.widget.GalleyView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -184,6 +185,15 @@ public abstract class RecyclerAdapter<Data>
         notifyDataSetChanged();
     }
 
+    public void update(Data data, ViewHolder<Data> holder) {
+        int pos = holder.getAdapterPosition();
+        if (pos >= 0){
+            mDataList.remove(pos);
+            mDataList.add(pos,data);
+        }
+        notifyItemChanged(pos);
+    }
+
     @Override
     public void onClick(View v) {
         ViewHolder viewHolder = (ViewHolder) v.getTag(R.id.tag_recycler_holder);
@@ -223,12 +233,12 @@ public abstract class RecyclerAdapter<Data>
      *
      * @param <Data> 范型
      */
-    public interface AdapterListener<Data> {
+    interface AdapterListener<Data> {
         // 当Cell点击的时候触发
-        void onItemClick(RecyclerAdapter.ViewHolder holder, Data data);
+        void onItemClick(RecyclerAdapter.ViewHolder<Data> holder, Data data);
 
         // 当Cell长按时触发
-        void onItemLongClick(RecyclerAdapter.ViewHolder holder, Data data);
+        void onItemLongClick(RecyclerAdapter.ViewHolder<Data> holder, Data data);
     }
 
     /**
@@ -271,6 +281,17 @@ public abstract class RecyclerAdapter<Data>
             if (this.callback != null) {
                 this.callback.update(data, this);
             }
+        }
+    }
+
+    public static abstract class AdapterListenerImpl<Data> implements AdapterListener<Data>{
+
+        public void onItemClick(RecyclerAdapter.ViewHolder<Data> holder, Data data) {
+
+        }
+
+        public void onItemLongClick(RecyclerAdapter.ViewHolder<Data> holder, Data data) {
+
         }
     }
 }
