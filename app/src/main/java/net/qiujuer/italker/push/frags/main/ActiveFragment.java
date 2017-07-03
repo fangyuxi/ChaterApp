@@ -10,13 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.qiujuer.italker.common.app.Fragment;
+import net.qiujuer.italker.common.widget.GalleyView;
 import net.qiujuer.italker.push.R;
+
+import butterknife.BindView;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ActiveFragment extends Fragment {
 
+    @BindView(R.id.galley)
+    GalleyView galleyView;
 
     public ActiveFragment() {
         // Required empty public constructor
@@ -33,6 +38,18 @@ public class ActiveFragment extends Fragment {
         super.onAttach(context);
 
         Log.e("Active","Active onAttach");
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+
+        galleyView.setup(getLoaderManager(), new GalleyView.SelectedChangeListener() {
+            @Override
+            public void onSelectedCountChanged(int count) {
+
+            }
+        });
     }
 
     @Override

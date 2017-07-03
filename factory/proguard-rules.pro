@@ -1,6 +1,6 @@
 # Add project specific ProGuard rules here.
 # By default, the flags in this file are appended to flags specified
-# in /Users/qiujuer/Library/Android/sdk/tools/proguard/proguard-android.txt
+# in /Users/yuxi/Library/Android/sdk/tools/proguard/proguard-android.txt
 # You can edit the include path and order by changing the proguardFiles
 # directive in build.gradle.
 #
@@ -23,6 +23,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
- -dontwarn com.yalantis.ucrop**
- -keep class com.yalantis.ucrop** { *; }
- -keep interface com.yalantis.ucrop** { *; }
