@@ -1,5 +1,7 @@
-package net.qiujuer.italker.push;
+package net.qiujuer.italker.push.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.widget.BottomNavigationView;
@@ -25,6 +27,7 @@ import net.qiujuer.genius.ui.widget.FloatActionButton;
 import net.qiujuer.italker.common.app.Activity;
 import net.qiujuer.italker.common.widget.PortraitView;
 import net.qiujuer.italker.common.widget.recycler.RecyclerAdapter;
+import net.qiujuer.italker.push.R;
 import net.qiujuer.italker.push.frags.NavHelper;
 import net.qiujuer.italker.push.frags.main.ActiveFragment;
 import net.qiujuer.italker.push.frags.main.ContactFragment;
@@ -84,6 +87,10 @@ public class MainActivity extends Activity
                 });
 
         initNav();
+    }
+
+    public static void show(Context context) {
+        context.startActivity(new Intent(context, MainActivity.class));
     }
 
     @OnClick(R.id.im_search)
